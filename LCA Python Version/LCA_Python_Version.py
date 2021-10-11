@@ -17,41 +17,29 @@ def insert(root, key):
             root.left = insert(root.left, key)
     return root
 
+# Checks if the tree rooted at this node contains the given key
+def contains(node, key):
+    if node is None:
+        return False
+    if node.val == key:
+        return True
+    elif key < node.val:
+        return contains(node.left, key)
+    else:
+        return contains(node.right, key)
+
 def LCAof(root, key1, key2):
-    current_node = root
-    while current_node is not None:
-        if current_node.val > key1 and current_node.val > key2:
-            current_node = current_node.left
-        elif current_node.val < key1 and current_node.val < key2:
-            current_node = current_node.right
-        else: return current_node.val
+    if contains(root, key1) and contains(root, key2):
+        current_node = root
+        while current_node is not None:
+            if current_node.val > key1 and current_node.val > key2:
+                current_node = current_node.left
+            elif current_node.val < key1 and current_node.val < key2:
+                current_node = current_node.right
+            else: return current_node.val
     return None
 
-r = Node('G')
-r = insert(r, 'N')
-r = insert(r, 'K')
-r = insert(r, 'E')
-r = insert(r, 'A')
-r = insert(r, 'P')
-r = insert(r, 'J')
-r = insert(r, 'F')
-r = insert(r, 'Z')
-r = insert(r, 'H')
-r = insert(r, 'L')
-
-#             G
-#           /   \
-#          /     \
-#         E       N
-#        / \     / \
-#       A   F   K   P
-#              / \   \
-#             J   L   Z
-#            /
-#           H
-
-
-print("The LCA of A and F is " + LCAof(r, 'A', 'F')) # Should be E
-print("The LCA of H and L is " + LCAof(r, 'H', 'L')) # Should be K
-print("The LCA of J and Z is " + LCAof(r, 'J', 'Z')) # Should be N
-print("The LCA of E and P is " + LCAof(r, 'E', 'P')) # Should be G
+def printKeysInOrder(node):
+    if node is None:
+        return ""
+    return "(" + printKeysInOrder(node.left) + ")" + node.val + "(" + printKeysInOrder(node.right) + ")"
